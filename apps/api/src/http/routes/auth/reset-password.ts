@@ -19,7 +19,7 @@ export async function resetPassword(app: FastifyInstance) {
           password: z.string().min(6),
         }),
         response: {
-          204: z.null,
+          204: z.null(),
         },
       },
     },

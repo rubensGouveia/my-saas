@@ -15,7 +15,7 @@ export async function requestPasswordRecover(app: FastifyInstance) {
           email: z.string().email(),
         }),
         response: {
-          201: z.null,
+          201: z.null(),
         },
       },
     },
