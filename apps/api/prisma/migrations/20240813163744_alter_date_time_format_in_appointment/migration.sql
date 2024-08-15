@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "appointments" ALTER COLUMN "date" SET DATA TYPE DATE,
+ALTER COLUMN "time" SET DATA TYPE TIME;
