@@ -13,15 +13,17 @@ model User {
   email                     String         @unique
   passwordHash              String?        @map("password_hash")
   avatarUrl                 String?        @map("avatar_url")
+  referralCode              String         @unique @map("referral_code")
   createdAt                 DateTime       @default(now()) @map("created_at")
   updatedAt                 DateTime       @updatedAt @map("updated_at")
   tokens                    Token[]
   accounts                  Account[]
-  invites                   Invite[]
   member_on                 Member[]
   owns_organizations        Organization[]
   appointments              Appointment[]  @relation("ClientAppointments")
   professional_appointments Appointment[]  @relation("ProfessionalAppointments")
+  parentNetworks            Network[]      @relation("ParentNetworkdRelation")
+  childNetworks             Network[]      @relation("ChildNetworkRelation")
 
   @@map("users")
 }
@@ -35,7 +37,7 @@ model Token {
   type      TokenType
   createdAt DateTime  @default(now()) @map("created_at")
 
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @map("user_id")
 
   @@map("tokens")
@@ -49,9 +51,8 @@ model Account {
   id                String          @id @default(uuid())
   provider          AccountProvider
   providerAccountId String          @unique @map("provider_account_id")
-
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @map("user_id")
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId            String          @map("user_id")
 
   @@unique([provider, userId])
   @@map("accounts")
@@ -63,32 +64,14 @@ enum Role {
   CLIENT
 }
 
-model Invite {
-  id        String   @id @default(uuid())
-  phone     String
-  role      Role
-  createdAt DateTime @default(now()) @map("created_at")
-
-  author User?   @relation(fields: [userId], references: [id])
-  userId String? @map("user_id")
-
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String       @map("organization_id")
-
-  @@unique([phone, organizationId])
-  @@index([phone])
-  @@map("invites")
-}
-
 model Member {
   id   String @id @default(uuid())
   role Role   @default(CLIENT)
 
-  organization   Organization @relation(fields: [organizationId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   organizationId String       @map("organization_id")
-
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @map("user_id")
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String       @map("user_id")
 
   @@unique([organizationId, userId])
   @@map("members")
@@ -103,13 +86,12 @@ model Organization {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  owner   User   @relation(fields: [ownerId], references: [id])
-  ownerId String @map("owner_id")
-
-  invites      Invite[]
+  owner        User          @relation(fields: [ownerId], references: [id])
+  ownerId      String        @map("owner_id")
   members      Member[]
   appointments Appointment[] @relation("OrganizationAppointments")
   services     Service[]
+  networks     Network[]
 
   @@map("organizations")
 }
@@ -122,17 +104,16 @@ enum AppointmentStatus {
 
 model Appointment {
   id     String            @id @default(uuid())
-  date   DateTime          @db.Date
-  time   DateTime          @db.Time(1)
+  date   DateTime
   status AppointmentStatus @default(PENDING)
 
-  client   User   @relation("ClientAppointments", fields: [clientId], references: [id])
+  client   User   @relation("ClientAppointments", fields: [clientId], references: [id], onDelete: Cascade)
   clientId String @map("client_id")
 
-  professional   User   @relation("ProfessionalAppointments", fields: [professionalId], references: [id])
+  professional   User   @relation("ProfessionalAppointments", fields: [professionalId], references: [id], onDelete: Cascade)
   professionalId String @map("professional_id")
 
-  organization   Organization @relation("OrganizationAppointments", fields: [organizationId], references: [id])
+  organization   Organization @relation("OrganizationAppointments", fields: [organizationId], references: [id], onDelete: Cascade)
   organizationId String       @map("organization_id")
 
   service   Service @relation(fields: [serviceId], references: [id])
@@ -144,6 +125,23 @@ model Appointment {
   @@map("appointments")
 }
 
+model Network {
+  id                     String @id @default(uuid())
+  parentUser             User   @relation("ParentNetworkdRelation", fields: [parentUserReferralCode], references: [referralCode], onDelete: Cascade)
+  parentUserReferralCode String @map("parent_user_referral_code")
+
+  childUser   User   @relation("ChildNetworkRelation", fields: [childUserId], references: [id], onDelete: Cascade)
+  childUserId String @map("child_user_id")
+
+  organization     Organization @relation(fields: [organizationSlug], references: [slug], onDelete: Cascade)
+  organizationSlug String       @map("organization_slug")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("networks")
+}
+
 model Service {
   id          String  @id @default(uuid())
   name        String
@@ -151,7 +149,7 @@ model Service {
   duration    Int
   price       Float
 
-  organization   Organization @relation(fields: [organizationId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   organizationId String       @map("organization_id")
 
   appointments Appointment[]
