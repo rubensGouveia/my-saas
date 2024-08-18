@@ -15,6 +15,7 @@ import { userSubject } from './subjects/user'
 export * from './models/user'
 export * from './models/invite'
 export * from './models/appointment'
+export * from './subjects/role'
 
 const appAbilitiesSchema = z.union([
   userSubject,
