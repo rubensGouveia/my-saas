@@ -2,11 +2,12 @@ import './globals.css'
 
 import type { Metadata } from 'next'
 import { ThemeProvider } from 'next-themes'
+
 export const metadata: Metadata = {
   title: 'My SAAS',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode

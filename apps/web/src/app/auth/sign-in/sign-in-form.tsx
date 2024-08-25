@@ -16,7 +16,7 @@ export function SignInForm() {
   const [{ success, message, errors }, handleSubmit, isPending] =
     useFormStateCustom(signInWithEmailAndPassword, () => {
       console.log('redirecting...')
-      router.push('/')
+      // router.push('/')
     })
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
