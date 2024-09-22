@@ -17,6 +17,7 @@
         "@fastify/swagger-ui": "^4.0.1",
         "@prisma/client": "5.18.0",
         "@saas/auth": "workspace:*",
+        "@saas/env": "workspace:*",
         "bcryptjs": "^2.4.3",
         "fastify": "^4.28.1",
         "fastify-plugin": "^4.5.1",
@@ -26,7 +27,6 @@
     "devDependencies": {
         "@faker-js/faker": "^8.4.1",
         "@saas/eslint-config": "workspace:*",
-        "@saas/env": "workspace:*",
         "@saas/prettier": "workspace:*",
         "@saas/tsconfig": "workspace:*",
         "@types/bcryptjs": "^2.4.6",
