@@ -1,7 +1,6 @@
 'use client'
 import { AlertTriangle, Loader2 } from 'lucide-react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
@@ -12,11 +11,9 @@ import { useFormStateCustom } from '@/hooks/use-form-state-custom'
 import { signInWithEmailAndPassword } from './action'
 
 export function SignInForm() {
-  const router = useRouter()
   const [{ success, message, errors }, handleSubmit, isPending] =
     useFormStateCustom(signInWithEmailAndPassword, () => {
       console.log('redirecting...')
-      // router.push('/')
     })
   return (
     <form onSubmit={handleSubmit} className="space-y-4">

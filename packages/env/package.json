@@ -5,15 +5,11 @@
   "main": "index.js",
   "type": "module",
   "types": "index.js",
-  "scripts": {
-    "build": "tsup index.ts --format esm -d ./"
-  },
   "devDependencies": {
     "@saas/eslint-config": "workspace:*",
     "@saas/prettier": "workspace:*",
     "@saas/tsconfig": "workspace:*",
-    "@types/node": "^22.2.0",
-    "tsup": "^8.2.4"
+    "@types/node": "^22.2.0"
   },
   "prettier": "@saas/prettier",
   "eslintConfig": {

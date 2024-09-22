@@ -4,14 +4,10 @@
   "private": true,
   "main": "dist/index.js",
   "types": "src/index.ts",
-  "scripts": {
-    "build": "tsup src/index.ts"
-  },
   "devDependencies": {
     "@saas/eslint-config": "workspace:*",
     "@saas/prettier": "workspace:*",
-    "@saas/tsconfig": "workspace:*",
-    "tsup": "^8.2.4"
+    "@saas/tsconfig": "workspace:*"
   },
   "prettier": "@saas/prettier",
   "eslintConfig": {

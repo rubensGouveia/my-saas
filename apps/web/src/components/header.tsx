@@ -10,19 +10,22 @@ import { Separator } from './ui/separator'
 
 export function Header() {
   return (
-    <div className="mx-auto flex max-w-[1200px] items-center justify-between">
-      <div className="flex items-center gap-3">
-        <Image src={logoIcon} alt="logo" className="size-8 dark:invert" />
+    <>
+      <div className="mx-auto mb-4 flex max-w-[1200px] items-center justify-between">
+        <div className="flex items-center gap-3">
+          <Image src={logoIcon} alt="logo" className="size-8 dark:invert" />
 
-        <Slash className="size-3 -rotate-[24deg] text-border" />
+          <Slash className="size-3 -rotate-[24deg] text-border" />
 
-        <OrganizationSwitcher />
+          <OrganizationSwitcher />
+        </div>
+        <div className="flex items-center gap-4">
+          <ThemeSwitcher />
+          <Separator className="h-5" orientation="vertical" />
+          <ProfileButton />
+        </div>
       </div>
-      <div className="flex items-center gap-4">
-        <ThemeSwitcher />
-        <Separator className="h-5" orientation="vertical" />
-        <ProfileButton />
-      </div>
-    </div>
+      <Separator />
+    </>
   )
 }

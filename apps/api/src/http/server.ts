@@ -72,6 +72,6 @@ app.register(getMembership)
 app.register(getOrganization)
 app.register(getOrganizationsUserMember)
 
-app.listen({ port: env.SERVER_PORT }).then(() => {
+app.listen({ port: env.PORT }).then(() => {
   console.log('HTTP server running ')
 })
